@@ -43,6 +43,8 @@ origins = [
     "http://localhost:8080",
     "http://localhost:5173",
     "http://127.0.0.1:8080",
+    "https://natwest-frontend.vercel.app",  # Replace with your actual Vercel frontend URL
+    "https://www.natwest-frontend.vercel.app",  # If you use www
 ]
 
 app.add_middleware(
@@ -305,7 +307,7 @@ async def generate_quiz(content: ContentInput, current_user: User = Depends(get_
         
         quiz = Quiz(
             title=content.title,
-            creator_id=current_user['email'],
+            creator_id=current_user.email,
             questions=questions,
             durationMinutes=content.durationMinutes,
             maxAttempts=content.maxAttempts,
