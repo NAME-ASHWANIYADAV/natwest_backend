@@ -43,8 +43,8 @@ origins = [
     "http://localhost:8080",
     "http://localhost:5173",
     "http://127.0.0.1:8080",
-    "https://natwest-frontend.vercel.app",  # Replace with your actual Vercel frontend URL
-    "https://www.natwest-frontend.vercel.app",  # If you use www
+    "https://assess-ai-wizard.vercel.app",
+    "https://www.assess-ai-wizard.vercel.app",
 ]
 
 app.add_middleware(
