@@ -1,0 +1,8 @@
+# Environment variables
+.env
+
+# Google Cloud service account key
+serviceAccountKey.json
+
+# Python cache
+__pycache__/

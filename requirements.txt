@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+google-generativeai
+firebase-admin
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+PyMuPDF
+bcrypt==3.2.0
