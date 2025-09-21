@@ -39,14 +39,7 @@ model = genai.GenerativeModel('gemini-1.5-pro-latest')
 app = FastAPI()
 
 # --- CORS Middleware ---
-origins = [
-    "http://localhost:8080",
-    "http://localhost:5173",
-    "http://127.0.0.1:8080",
-    "https://assess-ai-wizard.vercel.app",
-    "https://www.assess-ai-wizard.vercel.app",
-]
-
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
