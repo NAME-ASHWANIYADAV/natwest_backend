@@ -82,6 +82,7 @@ class ContentInput(BaseModel):
     text: str
     num_questions: int
     title: str
+    creator_id: str
     durationMinutes: Optional[int] = None
     maxAttempts: Optional[int] = None
     isAdaptive: bool = False
@@ -251,11 +252,11 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 
 # Quiz Generation Endpoint
 @app.post("/generate-quiz", response_model=Quiz)
-async def generate_quiz(content: ContentInput, current_user: User = Depends(get_current_user)):
+async def generate_quiz(content: ContentInput):
     if content.isAdaptive:
         quiz = Quiz(
             title=content.title,
-            creator_id=current_user.email,
+            creator_id=content.creator_id,
             questions=[],
             durationMinutes=content.durationMinutes,
             maxAttempts=content.maxAttempts,
@@ -324,9 +325,9 @@ async def generate_quiz_from_file(
     file: UploadFile = File(...),
     title: str = Form(...),
     num_questions: int = Form(...),
+    creator_id: str = Form(...),
     durationMinutes: Optional[int] = Form(None),
     maxAttempts: Optional[int] = Form(None),
-    current_user: User = Depends(get_current_user)
 ):
     try:
         pdf_bytes = await file.read()
@@ -368,7 +369,7 @@ async def generate_quiz_from_file(
         
         quiz = Quiz(
             title=title,
-            creator_id=current_user.email,
+            creator_id=creator_id,
             questions=questions,
             durationMinutes=durationMinutes,
             maxAttempts=maxAttempts,
