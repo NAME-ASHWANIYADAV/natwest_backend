@@ -18,6 +18,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print(f"DEBUG: JWT_SECRET_KEY loaded is: '{os.getenv('JWT_SECRET_KEY')}'")
+
 # --- Environment Variables ---
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
