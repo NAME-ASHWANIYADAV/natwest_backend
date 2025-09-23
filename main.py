@@ -568,14 +568,24 @@ async def submit_quiz(quiz_id: str, user_answers: List[UserAnswer], current_user
     The 'feedback' field should be a list of objects with the structure defined above.
     """
     
-    response = model.generate_content(prompt)
-    
+    evaluation_data = ""
     try:
+        response = model.generate_content(prompt)
         evaluation_data = response.text.strip()
         if evaluation_data.startswith("```json"):
             evaluation_data = evaluation_data[7:-3]
             
         result_data = json.loads(evaluation_data)
+        
+        # Validate feedback structure before creating Result object
+        validated_feedback = []
+        if 'feedback' in result_data and isinstance(result_data['feedback'], list):
+            for item in result_data['feedback']:
+                if isinstance(item, dict) and all(k in item for k in ['question_number', 'user_answer', 'ai_feedback', 'correct']):
+                    # Pydantic will still validate types, but we ensure the keys are present
+                    validated_feedback.append(Feedback(**item))
+        
+        result_data['feedback'] = validated_feedback
         result = Result(**result_data)
         
         submission = QuizSubmission(
@@ -615,7 +625,7 @@ async def submit_quiz(quiz_id: str, user_answers: List[UserAnswer], current_user
         )
 
     except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Failed to parse AI response as JSON.")
+        raise HTTPException(status_code=500, detail=f"Failed to parse AI response as JSON. Response: {evaluation_data}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to evaluate or save submission: {e}")
 
